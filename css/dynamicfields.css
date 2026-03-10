@@ -1,0 +1,114 @@
+/* =========================================================
+   DynamicFields Plugin — CSS isolado, sem Bootstrap
+   ========================================================= */
+
+/* ── Container ──────────────────────────────────────────── */
+#plugin-dynamicfields-container {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    /* neutralizar flex herdado do .card-body.row pai */
+    flex: 0 0 100% !important;
+    align-self: stretch !important;
+}
+
+/* ── Título ─────────────────────────────────────────────── */
+#plugin-dynamicfields-container .cf-section-title {
+    display: block;
+    font-size: 13px;
+    font-weight: 700;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin: 12px 0 10px 0;
+    padding: 0;
+    border: none;
+    width: 100%;
+}
+
+/* ── Grid de 2 colunas — classes próprias, sem Bootstrap ── */
+#plugin-dynamicfields-container .cf-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 10px 32px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#plugin-dynamicfields-container .cf-field {
+    display: flex !important;
+    flex-direction: column !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+/* ── Label ──────────────────────────────────────────────── */
+#plugin-dynamicfields-container .cf-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: #212529;
+    margin-bottom: 4px;
+    white-space: normal;
+}
+
+/* ── Inputs e selects ───────────────────────────────────── */
+#plugin-dynamicfields-container .cf-input,
+#plugin-dynamicfields-container .cf-select {
+    display: block !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    line-height: 1.5 !important;
+    color: #212529 !important;
+    background-color: #fff !important;
+    border: 1px solid #ced4da !important;
+    border-radius: 6px !important;
+    box-sizing: border-box !important;
+    transition: border-color 0.15s, box-shadow 0.15s !important;
+    appearance: auto;
+}
+
+#plugin-dynamicfields-container .cf-input:focus,
+#plugin-dynamicfields-container .cf-select:focus {
+    border-color: #86b7fe !important;
+    outline: 0 !important;
+    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25) !important;
+}
+
+#plugin-dynamicfields-container .cf-select:disabled {
+    background-color: #e9ecef !important;
+    cursor: not-allowed;
+    opacity: 1 !important;
+}
+
+/* ── Asterisco obrigatório ──────────────────────────────── */
+#plugin-dynamicfields-container .required {
+    color: #dc3545;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+/* ── Mobile: 1 coluna ───────────────────────────────────── */
+@media (max-width: 640px) {
+    #plugin-dynamicfields-container .cf-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* ── Admin: dropdown value editor ───────────────────────── */
+.dropdown-value-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+}

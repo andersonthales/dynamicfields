@@ -1,0 +1,151 @@
+# DynamicFields Plugin - Tradução pt_BR
+# Copyright (C) 2024
+# This file is distributed under the same license as the DynamicFields package.
+msgid ""
+msgstr ""
+"Project-Id-Version: DynamicFields\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 00:00+0000\n"
+"PO-Revision-Date: 2024-01-01 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Portuguese (Brazil)\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# Menu
+msgid "Campos Dinâmicos"
+msgstr "Campos Dinâmicos"
+
+# Tipos de campo
+msgid "Text"
+msgstr "Texto"
+
+msgid "Number"
+msgstr "Número"
+
+msgid "Dropdown (list)"
+msgstr "Lista suspensa"
+
+# Formulário de campo
+msgid "New field"
+msgstr "Novo campo"
+
+msgid "Edit field"
+msgstr "Editar campo"
+
+msgid "Label"
+msgstr "Etiqueta"
+
+msgid "Internal name"
+msgstr "Nome interno"
+
+msgid "Lowercase letters, numbers and underscores only"
+msgstr "Apenas letras minúsculas, números e sublinhados"
+
+msgid "Lowercase, no spaces. Cannot be changed later."
+msgstr "Minúsculas, sem espaços. Não pode ser alterado depois."
+
+msgid "Cannot be changed after creation."
+msgstr "Não pode ser alterado após a criação."
+
+msgid "Field type"
+msgstr "Tipo de campo"
+
+msgid "Mandatory"
+msgstr "Obrigatório"
+
+msgid "Default value"
+msgstr "Valor padrão"
+
+msgid "Display order"
+msgstr "Ordem de exibição"
+
+msgid "Dropdown values"
+msgstr "Valores da lista"
+
+msgid "Add value"
+msgstr "Adicionar valor"
+
+msgid "Apply to"
+msgstr "Aplicar a"
+
+msgid "Show for categories"
+msgstr "Exibir para as categorias"
+
+msgid "Leave empty to show for ALL categories."
+msgstr "Deixe em branco para exibir em TODAS as categorias."
+
+msgid "No ITIL categories found."
+msgstr "Nenhuma categoria ITIL encontrada."
+
+msgid "Hold Ctrl (or Cmd on Mac) to select multiple categories."
+msgstr "Segure Ctrl (ou Cmd no Mac) para selecionar múltiplas categorias."
+
+msgid "Delete this field and all its saved values permanently?"
+msgstr "Excluir este campo e todos os seus valores salvos permanentemente?"
+
+# Listagem
+msgid "Add a field"
+msgstr "Adicionar campo"
+
+msgid "No fields defined yet. Click \"Add a field\" to get started."
+msgstr "Nenhum campo definido. Clique em \"Adicionar campo\" para começar."
+
+msgid "Type"
+msgstr "Tipo"
+
+msgid "Applies to"
+msgstr "Aplicável a"
+
+msgid "Categories"
+msgstr "Categorias"
+
+msgid "All categories"
+msgstr "Todas as categorias"
+
+# Formulário de chamado
+msgid "Additional fields"
+msgstr "Campos adicionais"
+
+msgid "Select"
+msgstr "Selecione"
+
+# Campos nativos GLPI (sem domínio — usados via __() padrão)
+msgid "Ticket"
+msgstr "Chamado"
+
+msgid "Problem"
+msgstr "Problema"
+
+msgid "Change"
+msgstr "Mudança"
+
+msgid "Active"
+msgstr "Ativo"
+
+msgid "Yes"
+msgstr "Sim"
+
+msgid "No"
+msgstr "Não"
+
+msgid "Actions"
+msgstr "Ações"
+
+msgid "Remove"
+msgstr "Remover"
+
+msgid "Cancel"
+msgstr "Cancelar"
+
+msgid "Delete"
+msgstr "Excluir"
+
+msgid "Save"
+msgstr "Salvar"
+
+msgid "Add"
+msgstr "Adicionar"

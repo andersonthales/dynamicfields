@@ -1,0 +1,27 @@
+# Dependências e caches
+/vendor/
+/node_modules/
+*.cache
+
+# Arquivos de sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# Arquivos de ambiente
+.env
+.env.local
+
+# Arquivos temporários PHP
+*.swp
+*.swo
+*~

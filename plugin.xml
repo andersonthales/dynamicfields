@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+   <name>Campos Dinâmicos</name>
+   <key>dynamicfields</key>
+   <state>stable</state>
+   <logo></logo>
+   <description>
+      <long>
+         <lang name="pt_BR">Plugin para adicionar campos personalizados dinâmicos aos formulários de Chamados, Problemas e Mudanças, filtrados por categoria ITIL.</lang>
+         <lang name="en_GB">Plugin to add dynamic custom fields to Tickets, Problems and Changes forms, filtered by ITIL category.</lang>
+      </long>
+      <short>
+         <lang name="pt_BR">Campos personalizados dinâmicos por categoria ITIL</lang>
+         <lang name="en_GB">Dynamic custom fields filtered by ITIL category</lang>
+      </short>
+   </description>
+   <homepage>https://github.com/andersonthales/dynamicfields</homepage>
+   <download>https://github.com/andersonthales/dynamicfields/releases</download>
+   <issues>https://github.com/andersonthales/dynamicfields/issues</issues>
+   <readme>https://github.com/andersonthales/dynamicfields/blob/main/README.md</readme>
+   <authors>
+      <author>Anderson Thales</author>
+   </authors>
+   <versions>
+      <version>
+         <num>1.0.0</num>
+         <compatibility>~10.0</compatibility>
+      </version>
+   </versions>
+   <langs>
+      <lang>pt_BR</lang>
+      <lang>en_GB</lang>
+   </langs>
+   <license>GPLv2+</license>
+   <tags>
+      <tag lang="pt_BR">campos personalizados</tag>
+      <tag lang="pt_BR">categoria</tag>
+      <tag lang="en_GB">custom fields</tag>
+      <tag lang="en_GB">category</tag>
+   </tags>
+</root>

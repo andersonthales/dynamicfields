@@ -1,0 +1,2 @@
+<?php
+$LANG['dynamicfields'] = [];
