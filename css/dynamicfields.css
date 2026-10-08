@@ -1,8 +1,5 @@
-/* =========================================================
-   DynamicFields Plugin — CSS isolado, sem Bootstrap
-   ========================================================= */
+/* DynamicFields Plugin v1.1.0 */
 
-/* ── Container ──────────────────────────────────────────── */
 #plugin-dynamicfields-container {
     display: block !important;
     width: 100% !important;
@@ -12,12 +9,10 @@
     padding: 0 !important;
     border: none !important;
     background: transparent !important;
-    /* neutralizar flex herdado do .card-body.row pai */
     flex: 0 0 100% !important;
     align-self: stretch !important;
 }
 
-/* ── Título ─────────────────────────────────────────────── */
 #plugin-dynamicfields-container .cf-section-title {
     display: block;
     font-size: 13px;
@@ -31,7 +26,6 @@
     width: 100%;
 }
 
-/* ── Grid de 2 colunas — classes próprias, sem Bootstrap ── */
 #plugin-dynamicfields-container .cf-grid {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
@@ -49,7 +43,10 @@
     width: 100% !important;
 }
 
-/* ── Label ──────────────────────────────────────────────── */
+#plugin-dynamicfields-container .cf-field-full {
+    grid-column: 1 / -1 !important;
+}
+
 #plugin-dynamicfields-container .cf-label {
     display: block;
     font-size: 14px;
@@ -59,7 +56,6 @@
     white-space: normal;
 }
 
-/* ── Inputs e selects ───────────────────────────────────── */
 #plugin-dynamicfields-container .cf-input,
 #plugin-dynamicfields-container .cf-select {
     display: block !important;
@@ -67,7 +63,6 @@
     max-width: 100% !important;
     padding: 8px 12px !important;
     font-size: 14px !important;
-    font-weight: 400 !important;
     line-height: 1.5 !important;
     color: #212529 !important;
     background-color: #fff !important;
@@ -91,21 +86,128 @@
     opacity: 1 !important;
 }
 
-/* ── Asterisco obrigatório ──────────────────────────────── */
+#plugin-dynamicfields-container .cf-textarea {
+    resize: vertical !important;
+    min-height: 80px !important;
+}
+
+#plugin-dynamicfields-container .cf-checkbox-wrap {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 0;
+}
+
+#plugin-dynamicfields-container .cf-checkbox {
+    width: 18px !important;
+    height: 18px !important;
+    cursor: pointer;
+    accent-color: #0d6efd;
+}
+
+#plugin-dynamicfields-container .cf-checkbox-label {
+    font-size: 14px;
+    color: #212529;
+}
+
+#plugin-dynamicfields-container .cf-invalid {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.25rem rgba(220,53,69,.25) !important;
+}
+
+#plugin-dynamicfields-container .cf-validation-msg {
+    display: block;
+    width: 100%;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c2c7;
+    border-radius: 6px;
+    color: #842029;
+    font-size: 14px;
+}
+
+#plugin-dynamicfields-container .cf-description-text {
+    font-size: 13px;
+    color: #495057;
+    background: #f8f9fa;
+    border-left: 3px solid #6c757d;
+    padding: 8px 12px;
+    border-radius: 4px;
+    line-height: 1.5;
+}
+
 #plugin-dynamicfields-container .required {
     color: #dc3545;
     font-size: 12px;
     margin-left: 2px;
 }
 
-/* ── Mobile: 1 coluna ───────────────────────────────────── */
 @media (max-width: 640px) {
     #plugin-dynamicfields-container .cf-grid {
         grid-template-columns: 1fr !important;
     }
+    #plugin-dynamicfields-container .cf-field-full {
+        grid-column: 1 !important;
+    }
 }
 
-/* ── Admin: dropdown value editor ───────────────────────── */
+/* Readonly */
+.plugin-dynamicfields-readonly {
+    margin-top: 12px;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.plugin-dynamicfields-readonly .card-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 13px;
+    color: #495057;
+}
+
+.cf-readonly-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+    padding: 4px 0;
+}
+
+.cf-readonly-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.cf-readonly-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.cf-readonly-value {
+    font-size: 14px;
+    color: #212529;
+}
+
+.cf-readonly-textarea {
+    white-space: pre-wrap;
+    line-height: 1.4;
+}
+
+@media (max-width: 640px) {
+    .cf-readonly-grid { grid-template-columns: 1fr; }
+}
+
+/* Drag-and-drop admin */
+.cf-drag-over {
+    background-color: #e8f4fd !important;
+    outline: 2px dashed #0d6efd;
+}
+
 .dropdown-value-row {
     display: flex;
     align-items: center;
