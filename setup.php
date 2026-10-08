@@ -8,7 +8,7 @@
  * -------------------------------------------------------------------------
  */
 
-define('PLUGIN_DYNAMICFIELDS_VERSION', '1.0.0');
+define('PLUGIN_DYNAMICFIELDS_VERSION', '1.1.0');
 define('PLUGIN_DYNAMICFIELDS_MIN_GLPI', '10.0.0');
 define('PLUGIN_DYNAMICFIELDS_MAX_GLPI', '10.0.99');
 
