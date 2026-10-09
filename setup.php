@@ -8,7 +8,7 @@
  * -------------------------------------------------------------------------
  */
 
-define('PLUGIN_DYNAMICFIELDS_VERSION', '1.0.0');
+define('PLUGIN_DYNAMICFIELDS_VERSION', '1.1.0');
 define('PLUGIN_DYNAMICFIELDS_MIN_GLPI', '10.0.0');
 define('PLUGIN_DYNAMICFIELDS_MAX_GLPI', '10.0.99');
 
@@ -47,11 +47,12 @@ function plugin_init_dynamicfields()
     });
 
     if ((Session::getLoginUserID() || isCommandLine()) && Plugin::isPluginActive('dynamicfields')) {
+        $PLUGIN_HOOKS['add_css']['dynamicfields'][] = 'css/dynamicfields.css';
+        $PLUGIN_HOOKS['add_javascript']['dynamicfields'][] = 'js/load_css.js';
 
         if (isset($_SESSION['glpiactiveentities'])) {
             $PLUGIN_HOOKS['config_page']['dynamicfields'] = 'front/field.php';
             $PLUGIN_HOOKS['menu_toadd']['dynamicfields']  = ['config' => 'PluginDynamicfieldsMenu'];
-            $PLUGIN_HOOKS['add_css']['dynamicfields'][]   = 'css/dynamicfields.css';
 
             // Inject custom fields into ITIL forms
             $PLUGIN_HOOKS['post_item_form']['dynamicfields'] = [

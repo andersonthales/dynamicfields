@@ -21,13 +21,13 @@ $field = new PluginDynamicfieldsField();
 // ── POST actions ────────────────────────────────────────────────────────────
 
 if (isset($_POST['purge'])) {
-    $field->check((int) $_POST['id'], PURGE);
+    $field->check((int) $_POST['id'], UPDATE);
     $field->delete($_POST, true);
     Html::redirect(PLUGINDYNAMICFIELDS_WEB_DIR . '/front/field.php');
 }
 
 if (isset($_POST['add'])) {
-    $field->check(-1, CREATE);
+    $field->check(-1, UPDATE);
     $newID = $field->add($_POST);
     Html::redirect(PLUGINDYNAMICFIELDS_WEB_DIR . '/front/field.form.php?id=' . (int) $newID);
 }

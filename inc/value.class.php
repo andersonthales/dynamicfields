@@ -10,9 +10,6 @@ if (!defined('GLPI_ROOT')) {
     die("Sorry. You can't access this file directly");
 }
 
-/**
- * PluginDynamicfieldsValue - stores field values per item
- */
 class PluginDynamicfieldsValue extends CommonDBTM
 {
     public static $rightname = 'ticket';
@@ -27,50 +24,27 @@ class PluginDynamicfieldsValue extends CommonDBTM
         return _n('Field value', 'Field values', $nb, 'dynamicfields');
     }
 
-    /**
-     * Hook called after a ticket/item is added.
-     *
-     * @param CommonDBTM $item
-     */
     public static function afterAdd(CommonDBTM $item)
     {
         self::saveValues($item);
     }
 
-    /**
-     * Hook called after a ticket/item is updated.
-     *
-     * @param CommonDBTM $item
-     */
     public static function afterUpdate(CommonDBTM $item)
     {
         self::saveValues($item);
     }
 
-    /**
-     * Hook called before a ticket/item is purged.
-     *
-     * @param CommonDBTM $item
-     */
     public static function beforePurge(CommonDBTM $item)
     {
-        /** @var DBmysql $DB */
         global $DB;
-
         $DB->delete(self::getTable(), [
             'items_id' => $item->fields['id'],
             'itemtype' => $item->getType(),
         ]);
     }
 
-    /**
-     * Save posted plugin_dynamicfields values.
-     *
-     * @param CommonDBTM $item
-     */
     private static function saveValues(CommonDBTM $item)
     {
-        /** @var DBmysql $DB */
         global $DB;
 
         if (empty($_POST['plugin_dynamicfields']) || !is_array($_POST['plugin_dynamicfields'])) {
@@ -79,20 +53,62 @@ class PluginDynamicfieldsValue extends CommonDBTM
 
         $items_id = $item->fields['id'];
         $itemtype = $item->getType();
+        $is_new   = !isset($item->fields['date_creation']) || $item->fields['date_creation'] === $item->fields['date_mod'];
+
+        // Load field definitions for readonly check
+        $field_defs = [];
+        $fids = array_keys($_POST['plugin_dynamicfields']);
+        if (!empty($fids)) {
+            $iter = $DB->request(['FROM' => 'glpi_plugin_dynamicfields_fields', 'WHERE' => ['id' => $fids]]);
+            foreach ($iter as $f) {
+                $field_defs[$f['id']] = $f;
+            }
+        }
 
         foreach ($_POST['plugin_dynamicfields'] as $field_id => $value) {
             $field_id = (int) $field_id;
-            if ($field_id <= 0) {
+            if ($field_id <= 0) continue;
+
+            // Backend validation: skip readonly fields on update
+            if (!$is_new && isset($field_defs[$field_id]) && $field_defs[$field_id]['is_readonly_after_create']) {
                 continue;
             }
 
-            // Sanitize value
             if (is_array($value)) {
                 $value = implode(', ', $value);
             }
             $value = trim((string) $value);
 
-            // Check if a value already exists
+            // Backend validation: mandatory fields
+            if (isset($field_defs[$field_id]) && $field_defs[$field_id]['is_mandatory'] && $value === '') {
+                Session::addMessageAfterRedirect(
+                    sprintf('Campo obrigatório não preenchido: %s', $field_defs[$field_id]['label']),
+                    true,
+                    ERROR
+                );
+                continue;
+            }
+
+            // Backend validation: formato por tipo (não confiar só na validação HTML5 do navegador)
+            if ($value !== '' && isset($field_defs[$field_id])) {
+                $ftype   = $field_defs[$field_id]['type'];
+                $invalid = match (true) {
+                    $ftype === 'email'  => !filter_var($value, FILTER_VALIDATE_EMAIL),
+                    $ftype === 'url'    => !filter_var($value, FILTER_VALIDATE_URL),
+                    $ftype === 'number' => !preg_match('/^-?\d+$/', $value),
+                    $ftype === 'float'  => !is_numeric($value),
+                    default             => false,
+                };
+                if ($invalid) {
+                    Session::addMessageAfterRedirect(
+                        sprintf('Valor inválido para o campo: %s', $field_defs[$field_id]['label']),
+                        true,
+                        ERROR
+                    );
+                    continue;
+                }
+            }
+
             $existing = $DB->request([
                 'FROM'  => self::getTable(),
                 'WHERE' => [
@@ -121,25 +137,14 @@ class PluginDynamicfieldsValue extends CommonDBTM
         }
     }
 
-    /**
-     * Get all saved values for an item as field_id => value map.
-     *
-     * @param int    $items_id
-     * @param string $itemtype
-     * @return array
-     */
     public static function getValuesForItem($items_id, $itemtype)
     {
-        /** @var DBmysql $DB */
         global $DB;
 
-        $values = [];
+        $values   = [];
         $iterator = $DB->request([
             'FROM'  => self::getTable(),
-            'WHERE' => [
-                'items_id' => $items_id,
-                'itemtype' => $itemtype,
-            ],
+            'WHERE' => ['items_id' => $items_id, 'itemtype' => $itemtype],
         ]);
 
         foreach ($iterator as $row) {
@@ -147,5 +152,79 @@ class PluginDynamicfieldsValue extends CommonDBTM
         }
 
         return $values;
+    }
+
+    /**
+     * Export all values for a given itemtype as CSV.
+     */
+    public static function exportCSV(string $itemtype): void
+    {
+        global $DB;
+
+        // Get field definitions
+        $fields_iter = $DB->request([
+            'FROM'  => 'glpi_plugin_dynamicfields_fields',
+            'WHERE' => [
+                'is_active' => 1,
+                ['itemtypes' => ['LIKE', '%"' . $DB->escape($itemtype) . '"%']],
+            ],
+            'ORDER' => ['ranking ASC', 'id ASC'],
+        ]);
+
+        $fields = [];
+        foreach ($fields_iter as $f) {
+            $fields[$f['id']] = $f;
+        }
+
+        if (empty($fields)) {
+            echo 'Nenhum campo encontrado.';
+            return;
+        }
+
+        // Get all items with values
+        $items_iter = $DB->request([
+            'SELECT'   => ['items_id'],
+            'FROM'     => self::getTable(),
+            'WHERE'    => ['itemtype' => $itemtype],
+            'GROUPBY'  => ['items_id'],
+            'ORDER'    => ['items_id ASC'],
+        ]);
+
+        $filename = 'dynamicfields_' . strtolower($itemtype) . '_' . date('Ymd_His') . '.csv';
+
+        header('Content-Type: text/csv; charset=utf-8');
+        header('Content-Disposition: attachment; filename="' . $filename . '"');
+        header('Pragma: no-cache');
+
+        $out = fopen('php://output', 'w');
+        fprintf($out, chr(0xEF) . chr(0xBB) . chr(0xBF)); // UTF-8 BOM
+
+        // Header row
+        $headers = ['ID do Chamado', 'Título'];
+        foreach ($fields as $f) {
+            $headers[] = $f['label'];
+        }
+        fputcsv($out, $headers, ';');
+
+        foreach ($items_iter as $row) {
+            $items_id = $row['items_id'];
+            $saved    = self::getValuesForItem($items_id, $itemtype);
+
+            // Get item title
+            $title = '';
+            $item_iter = $DB->request(['SELECT' => ['name'], 'FROM' => getTableForItemType($itemtype), 'WHERE' => ['id' => $items_id]]);
+            if ($item_iter->count() > 0) {
+                $title = $item_iter->current()['name'] ?? '';
+            }
+
+            $line = [$items_id, $title];
+            foreach ($fields as $fid => $f) {
+                $line[] = $saved[$fid] ?? '';
+            }
+            fputcsv($out, $line, ';');
+        }
+
+        fclose($out);
+        exit;
     }
 }
