@@ -212,7 +212,7 @@ class PluginDynamicfieldsValue extends CommonDBTM
 
             // Get item title
             $title = '';
-            $item_iter = $DB->request(['SELECT' => ['name'], 'FROM' => strtolower($itemtype) . 's', 'WHERE' => ['id' => $items_id]]);
+            $item_iter = $DB->request(['SELECT' => ['name'], 'FROM' => getTableForItemType($itemtype), 'WHERE' => ['id' => $items_id]]);
             if ($item_iter->count() > 0) {
                 $title = $item_iter->current()['name'] ?? '';
             }

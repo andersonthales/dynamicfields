@@ -30,6 +30,19 @@ class PluginDynamicfieldsField extends CommonDBTM
         return Session::haveRight(static::$rightname, UPDATE);
     }
 
+    /**
+     * Ao excluir um campo, remove também os valores salvos e os vínculos
+     * com categorias — sem isso ficam linhas órfãs nas duas tabelas.
+     */
+    public function cleanDBonPurge()
+    {
+        global $DB;
+
+        $fid = (int) $this->fields['id'];
+        $DB->delete('glpi_plugin_dynamicfields_values', ['plugin_dynamicfields_fields_id' => $fid]);
+        $DB->delete('glpi_plugin_dynamicfields_categories', ['plugin_dynamicfields_fields_id' => $fid]);
+    }
+
     public static function getTable($classname = null)
     {
         return 'glpi_plugin_dynamicfields_fields';
@@ -630,7 +643,14 @@ JS;
             if ($field['name'] === 'centroacadmicofield') {
                 // Load from config table
                 global $DB;
-                $cfg = $DB->request(['FROM' => 'glpi_plugin_dynamicfields_config', 'WHERE' => ['cfg_key' => 'centro_sub_map']]);
+                // 'centro_subunidade_map' é a chave lida por ajax/get_subunidades.php;
+                // 'centro_sub_map' fica como fallback para bases antigas.
+                $cfg = $DB->request([
+                    'FROM'  => 'glpi_plugin_dynamicfields_config',
+                    'WHERE' => ['cfg_key' => ['centro_subunidade_map', 'centro_sub_map']],
+                    'ORDER' => 'cfg_key DESC',
+                    'LIMIT' => 1,
+                ]);
                 if ($cfg->count() > 0) {
                     $all_subs_map = json_decode($cfg->current()['cfg_value'] ?? '{}', true) ?? [];
                 }
